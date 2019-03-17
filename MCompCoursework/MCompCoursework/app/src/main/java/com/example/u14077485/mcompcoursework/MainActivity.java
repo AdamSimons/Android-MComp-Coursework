@@ -1,20 +1,14 @@
 package com.example.u14077485.mcompcoursework;
 
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         btnXML = (Button) findViewById(R.id.btnXML);
         btnJSON = (Button) findViewById(R.id.btnJSON);
 
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
     }
 
     public void onClickButton(View view) {
@@ -45,4 +41,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commitNow();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_search) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

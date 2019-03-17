@@ -1,27 +1,29 @@
 package com.example.u14077485.mcompcoursework;
 
+import android.app.SearchManager;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerFragment extends Fragment {
+public class RecyclerFragment extends Fragment implements SearchView.OnQueryTextListener {
     private List<Book> books = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerViewCustomAdapter recyclerViewCustomAdapter;
@@ -30,8 +32,21 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String text = getArguments().getString("Extension");
         new WebAsync().execute(getArguments().getString("Extension"));
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_bar,menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search");
+
+        searchView.setOnQueryTextListener(this);
+
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -50,6 +65,23 @@ public class RecyclerFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if(recyclerViewCustomAdapter != null) {
+            recyclerViewCustomAdapter.getFilter().filter(query);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(recyclerViewCustomAdapter != null) {
+            recyclerViewCustomAdapter.getFilter().filter(newText);
+        }
+        return false;
+    }
     private class WebAsync extends AsyncTask<String, Integer, String> {
         ConnectionClass cc = new ConnectionClass();
         @Override

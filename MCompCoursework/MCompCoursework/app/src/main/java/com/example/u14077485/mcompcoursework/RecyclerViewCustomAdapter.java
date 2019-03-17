@@ -5,16 +5,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerViewCustomAdapter.ViewHolder> {
-    private final List<Book> books;
+public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerViewCustomAdapter.ViewHolder> implements Filterable {
+    private List<Book> books;
+    private List<Book> filteredBooks;
 
     public RecyclerViewCustomAdapter(List<Book> books) {
         this.books = books;
+        this.filteredBooks = new ArrayList<>(books);
     }
 
     @Override
@@ -29,18 +35,18 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
 
     }
     private void setData(ViewHolder holder, int position) {
-        holder.txt_Title.setText(books.get(position).getTitle());
-        holder.txt_Price.setText(books.get(position).getPrice().toString());
-        holder.txt_Year.setText(books.get(position).getYear());
+        holder.txt_Title.setText(filteredBooks.get(position).getTitle());
+        holder.txt_Price.setText(filteredBooks.get(position).getPrice().toString());
+        holder.txt_Year.setText(filteredBooks.get(position).getYear());
         String text = null;
-        if(books.get(position).getAuthors().size() > 2) {
-            text = books.get(position).getAuthors().get(0).getFullName() + ", "+ books.get(position).getAuthors().get(1).getFullName()+ " et al.";
+        if(filteredBooks.get(position).getAuthors().size() > 2) {
+            text = filteredBooks.get(position).getAuthors().get(0).getFullName() + ", "+ filteredBooks.get(position).getAuthors().get(1).getFullName()+ " et al.";
         }
-        else if (books.get(position).getAuthors().size() == 2 ) {
-            text = books.get(position).getAuthors().get(0).getFullName()+", " + books.get(position).getAuthors().get(1).getFullName();
+        else if (filteredBooks.get(position).getAuthors().size() == 2 ) {
+            text = filteredBooks.get(position).getAuthors().get(0).getFullName()+", " + filteredBooks.get(position).getAuthors().get(1).getFullName();
         }
         else {
-            text = books.get(position).getAuthors().get(0).getFullName();
+            text = filteredBooks.get(position).getAuthors().get(0).getFullName();
         }
         holder.txt_Author.setText(text);
     }
@@ -53,7 +59,7 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return books.size();
+        return filteredBooks.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -72,4 +78,34 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String searchTerm = constraint.toString();
+                if(searchTerm.isEmpty()) {
+                    filteredBooks = new ArrayList<>(books);
+                }
+                else {
+                    filteredBooks = new ArrayList<>(books);
+                    List<Book> tempList = new ArrayList<>();
+                    for (Book book : books) {
+                        if(!book.getTitle().toLowerCase().contains(searchTerm.toLowerCase())){
+                            tempList.add(book);
+                        }
+                    }
+                    filteredBooks.removeAll(tempList);
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredBooks;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                notifyDataSetChanged();
+            }
+        };
+    }
 }
