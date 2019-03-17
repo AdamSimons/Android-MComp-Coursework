@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.u14077485.mcompcoursework.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <FrameLayout
         android:id="@+id/recyclerFragment"
         android:layout_width="match_parent"
