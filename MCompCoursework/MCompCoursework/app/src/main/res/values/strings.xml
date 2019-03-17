@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MCompCoursework</string>
+    <string name="btnXML">Get XML Data</string>
+    <string name="btnJSON">Get JSON Data</string>
+    <string name="tag_XML">xml</string>
+    <string name="tag_JSON">json</string>
+
+</resources>
