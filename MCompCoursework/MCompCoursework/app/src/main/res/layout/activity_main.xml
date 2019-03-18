@@ -17,6 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"/>
+    <!--<FrameLayout-->
+        <!--android:id="@+id/detailsFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
     <Button
         android:id="@+id/btnXML"
         android:tag="@string/tag_XML"
@@ -28,7 +35,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/btnJSON"
         android:layout_below="@+id/recyclerFragment"
-        app:layout_constraintTop_toBottomOf="@id/recyclerFragment"/>
+        app:layout_constraintTop_toBottomOf="@id/recyclerFragment"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
         android:id="@+id/btnJSON"
         android:tag="@string/tag_JSON"
@@ -40,6 +48,7 @@
         app:layout_constraintLeft_toRightOf="@id/btnXML"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_below="@+id/recyclerFragment"
-        app:layout_constraintTop_toBottomOf="@id/recyclerFragment"/>
+        app:layout_constraintTop_toBottomOf="@id/recyclerFragment"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

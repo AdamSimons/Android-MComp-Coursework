@@ -1,5 +1,4 @@
 package com.example.u14077485.mcompcoursework;
-
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnXML = (Button) findViewById(R.id.btnXML);
         btnJSON = (Button) findViewById(R.id.btnJSON);
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
     }
 
     public void onClickButton(View view) {
@@ -37,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerFragment = new RecyclerFragment();
 
         recyclerFragment.setArguments(bundle);
+//        fragmentTransaction.add(R.id.recyclerFragment,recyclerFragment);
         fragmentTransaction.replace(R.id.recyclerFragment, recyclerFragment,"RECYCLER_FRAGMENT");
         fragmentTransaction.commitNow();
     }
