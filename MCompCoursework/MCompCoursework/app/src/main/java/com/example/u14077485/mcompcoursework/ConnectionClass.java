@@ -66,6 +66,7 @@ public class ConnectionClass {
         return result;
     }
 
+
     private List<Book> parseJSON(String result) throws IOException {
         List<Book> books = new ArrayList<Book>();
         try {
@@ -73,21 +74,42 @@ public class ConnectionClass {
             JSONObject jsonObject = new JSONObject(result);
 
             JSONArray jsonArray = jsonObject.getJSONArray("books");
+
             for (int i=0; i < jsonArray.length(); i++) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                String title = object.getString("title");
-                String year = object.getString("year");
-                String publisher = object.getString("publisher");
-                double price = object.getDouble("price");
-
-                JSONArray authorArray = object.getJSONArray("authors");
+                String title = "NA";
+                String year = "NA";
+                String publisher = "NA";
+                double price = -1.0;
                 List<Author> authors = new ArrayList<>();
-                for (int j = 0; j < authorArray.length(); j++) {
-                    JSONObject author = authorArray.getJSONObject(j);
-                    String firstName = author.getString("first");
-                    String lastName = author.getString("last");
 
-                    authors.add(new Author(firstName, lastName));
+                JSONObject object = jsonArray.getJSONObject(i);
+                if(object.has("title")) {
+                    title = object.getString("title");
+                }
+                if(object.has("year")) {
+                    year = object.getString("year");
+                }
+                if(object.has("publisher")) {
+                    publisher = object.getString("publisher");
+                }
+                if(object.has("price")) {
+                    price = object.getDouble("price");
+                }
+                if(object.has("authors")) {
+                    JSONArray authorArray = object.getJSONArray("authors");
+                    for (int j = 0; j < authorArray.length(); j++) {
+                        JSONObject author = authorArray.getJSONObject(j);
+                        String firstName = "NA";
+                        String lastName = "NA";
+                        if (author.has("first")) {
+                            firstName = author.getString("first");
+                        }
+                        if(author.has("last")) {
+                            lastName = author.getString("last");
+                        }
+
+                        authors.add(new Author(firstName, lastName));
+                    }
                 }
 
                 books.add(new Book(title, year, publisher, price, authors));
@@ -98,6 +120,8 @@ public class ConnectionClass {
         }
         return books;
     }
+
+
 
     private List<Book> parseXML(String result) throws IOException {
         List<Book> books = new ArrayList<>();

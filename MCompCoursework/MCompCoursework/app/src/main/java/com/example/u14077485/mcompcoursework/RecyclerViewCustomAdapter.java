@@ -46,14 +46,14 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
         holder.txt_Title.setText(filteredBooks.get(position).getTitle());
         holder.txt_Price.setText("£" + filteredBooks.get(position).getPrice().toString());
         holder.txt_Year.setText(filteredBooks.get(position).getYear());
-        String text = null;
+        String text = "NA";
         if(filteredBooks.get(position).getAuthors().size() > 2) {
             text = filteredBooks.get(position).getAuthors().get(0).getFullName() + ", "+ filteredBooks.get(position).getAuthors().get(1).getFullName()+ " et al.";
         }
         else if (filteredBooks.get(position).getAuthors().size() == 2 ) {
             text = filteredBooks.get(position).getAuthors().get(0).getFullName()+", " + filteredBooks.get(position).getAuthors().get(1).getFullName();
         }
-        else {
+        else if (filteredBooks.get(position).getAuthors().size() > 0){
             text = filteredBooks.get(position).getAuthors().get(0).getFullName();
         }
         holder.txt_Author.setText(text);

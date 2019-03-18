@@ -7,29 +7,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerFragment recyclerFragment;
-    private List<Book> books = new ArrayList<>();
-    private Button btnXML, btnJSON;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnXML = (Button) findViewById(R.id.btnXML);
-        btnJSON = (Button) findViewById(R.id.btnJSON);
+        Button btnXML = (Button) findViewById(R.id.btnXML);
+        Button btnJSON = (Button) findViewById(R.id.btnJSON);
     }
-
     public void onClickButton(View view) {
 
         Bundle bundle = new Bundle();
         bundle.putString("Extension",view.getTag().toString());
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        recyclerFragment = new RecyclerFragment();
+        RecyclerFragment recyclerFragment = new RecyclerFragment();
 
         recyclerFragment.setArguments(bundle);
 //        fragmentTransaction.add(R.id.recyclerFragment,recyclerFragment);
