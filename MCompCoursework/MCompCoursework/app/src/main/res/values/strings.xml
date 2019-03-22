@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">MCompCoursework</string>
-    <string name="btnXML">Get XML Data</string>
-    <string name="btnJSON">Get JSON Data</string>
+    <string name="btnXML">Get XML</string>
+    <string name="btnJSON">Get JSON</string>
     <string name="tag_XML">xml</string>
     <string name="tag_JSON">json</string>
-
+    <string name="radioTitle">Title</string>
+    <string name="radioYear">Year</string>
+    <string name="radioGroup">Search by:</string>
 </resources>

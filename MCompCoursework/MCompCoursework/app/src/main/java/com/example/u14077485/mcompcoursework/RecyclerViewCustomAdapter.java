@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +18,15 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     private List<Book> books;
     private List<Book> filteredBooks;
     CustomItemClickListener itemClickListener;
+    private Boolean searchTitle;
 
     public RecyclerViewCustomAdapter(List<Book> books, CustomItemClickListener listener) {
         this.books = books;
         this.filteredBooks = new ArrayList<>(books);
         itemClickListener = listener;
+        searchTitle = true;
     }
+
     @Override
     public RecyclerViewCustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent,false);
@@ -84,6 +88,9 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
             txt_Price = view.findViewById(R.id.lbl_Price);
         }
     }
+    public void setSearch(Boolean titles) {
+        searchTitle = titles;
+    }
 
     @Override
     public Filter getFilter() {
@@ -98,8 +105,15 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
                     filteredBooks = new ArrayList<>(books);
                     List<Book> tempList = new ArrayList<>();
                     for (Book book : books) {
-                        if(book.getTitle().toLowerCase().contains(searchTerm.toLowerCase()) || book.getYear().equals(searchTerm)){
-                            tempList.add(book);
+                        if(searchTitle) {
+                            if(book.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
+                                tempList.add(book);
+                            }
+                        }
+                        else if(!searchTitle) {
+                            if (book.getYear().equals(searchTerm)) {
+                                tempList.add(book);
+                            }
                         }
                     }
                     filteredBooks = tempList;

@@ -17,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class RecyclerFragment extends Fragment implements SearchView.OnQueryText
     private Book bookTouched;
     private RecyclerView recyclerView;
     private RecyclerViewCustomAdapter recyclerViewCustomAdapter;
+    private RadioGroup radioGroup;
 
     public RecyclerFragment() { }
     @Override
@@ -53,6 +56,23 @@ public class RecyclerFragment extends Fragment implements SearchView.OnQueryText
         recyclerView = (RecyclerView) view.findViewById(R.id.RView);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
+
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioLayout);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+                if(radioButton != null && recyclerViewCustomAdapter != null) {
+                    if(radioButton.getText() == getString(R.string.radioTitle)) {
+                        recyclerViewCustomAdapter.setSearch(true);
+                    }
+                    else {
+                        recyclerViewCustomAdapter.setSearch(false);
+                    }
+                }
+            }
+        });
+
         return view;
     }
 
@@ -78,7 +98,6 @@ public class RecyclerFragment extends Fragment implements SearchView.OnQueryText
         }
         return false;
     }
-
 
 
     private class WebAsync extends AsyncTask<String, Integer, String> {
@@ -108,7 +127,6 @@ public class RecyclerFragment extends Fragment implements SearchView.OnQueryText
                     DetailsFragment df = new DetailsFragment();
                     df.setArguments(bundle);
                     ft.replace(R.id.recyclerFragment, df,"DETAILS_FRAGMENT");
-//                    ft.addToBackStack(null);
                     ft.commitNow();
 
                 }

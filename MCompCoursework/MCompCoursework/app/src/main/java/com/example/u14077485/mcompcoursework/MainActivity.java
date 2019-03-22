@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerFragment recyclerFragment = new RecyclerFragment();
 
         recyclerFragment.setArguments(bundle);
-//        fragmentTransaction.add(R.id.recyclerFragment,recyclerFragment);
         fragmentTransaction.replace(R.id.recyclerFragment, recyclerFragment,"RECYCLER_FRAGMENT");
         fragmentTransaction.commitNow();
     }
