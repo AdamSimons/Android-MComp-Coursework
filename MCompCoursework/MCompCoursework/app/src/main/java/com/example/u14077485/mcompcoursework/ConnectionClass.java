@@ -81,6 +81,7 @@ public class ConnectionClass {
                 String publisher = "NA";
                 double price = -1.0;
                 List<Author> authors = new ArrayList<>();
+                String imageURL = null;
 
                 JSONObject object = jsonArray.getJSONObject(i);
                 if(object.has("title")) {
@@ -111,8 +112,11 @@ public class ConnectionClass {
                         authors.add(new Author(firstName, lastName));
                     }
                 }
+                if(object.has("image")) {
+                    imageURL = object.getString("image");
+                }
 
-                books.add(new Book(title, year, publisher, price, authors));
+                books.add(new Book(title, year, publisher, price, authors, imageURL));
             }
 
         }catch (JSONException e) {
@@ -120,8 +124,6 @@ public class ConnectionClass {
         }
         return books;
     }
-
-
 
     private List<Book> parseXML(String result) throws IOException {
         List<Book> books = new ArrayList<>();
@@ -134,6 +136,7 @@ public class ConnectionClass {
         List<Author> authors = new ArrayList<>();
         String firstName = null;
         String lastName = null;
+        String imageURL = null;
 
         try {
             XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
@@ -154,8 +157,16 @@ public class ConnectionClass {
                         tag = xmlPullParser.getName();
                         switch(tag){
                             case "book":
-                                books.add(new Book(title, year, publisher, price, authors));
+                                books.add(new Book(title, year, publisher, price, authors, imageURL));
+                                // Reset values
                                 authors = new ArrayList<>();
+                                title = null;
+                                year = null;
+                                publisher = null;
+                                price = -1.0;
+                                firstName = null;
+                                lastName = null;
+                                imageURL = null;
                                 break;
                             case "title":
                                 title = text;
@@ -177,6 +188,9 @@ public class ConnectionClass {
                                 break;
                             case "last":
                                 lastName = text;
+                                break;
+                            case "image":
+                                imageURL = text;
                                 break;
                         }break;
                 }

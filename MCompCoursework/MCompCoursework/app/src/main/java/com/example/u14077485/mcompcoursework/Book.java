@@ -17,6 +17,7 @@ public class Book implements Parcelable {
     private String publisher;
     private List<Author> authors;
     private Double price;
+    private String imageURL;
 
 
     public String getTitle() {
@@ -59,12 +60,21 @@ public class Book implements Parcelable {
         this.price = price;
     }
 
-    public Book(String title, String year, String publisher, Double price, List<Author> authors) {
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public Book(String title, String year, String publisher, Double price, List<Author> authors, String imageURL) {
         this.title = title;
         this.year = year;
         this.publisher = publisher;
         this.authors = authors;
         this.price = price;
+        this.imageURL = imageURL;
     }
 
 

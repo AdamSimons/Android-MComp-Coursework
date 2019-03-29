@@ -115,7 +115,7 @@ public class RecyclerFragment extends Fragment implements SearchView.OnQueryText
                 Log.e("RecyclerFragment", "Exception", e);
             }
             Log.e("Data", books.get(0).getTitle());
-            recyclerViewCustomAdapter = new RecyclerViewCustomAdapter(books, new CustomItemClickListener() {
+            recyclerViewCustomAdapter = new RecyclerViewCustomAdapter(getActivity().getApplicationContext() ,books, new CustomItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position, List<Book> filteredData) {
                     Log.e("Onclick", Integer.toString(position) + filteredData.get(position).getTitle());

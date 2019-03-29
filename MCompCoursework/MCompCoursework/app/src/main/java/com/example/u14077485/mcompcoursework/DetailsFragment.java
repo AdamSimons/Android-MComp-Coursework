@@ -1,12 +1,16 @@
 package com.example.u14077485.mcompcoursework;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,8 @@ public class DetailsFragment extends Fragment {
         TextView year = view.findViewById(R.id.lbl_Year);
         TextView price = view.findViewById(R.id.lbl_Price);
         TextView publisher = view.findViewById(R.id.lbl_Publisher);
+        ImageView image = view.findViewById(R.id.image);
+        Context context = getContext();
 
         title.setText(book.getTitle());
         year.setText(book.getYear());
@@ -44,9 +50,12 @@ public class DetailsFragment extends Fragment {
             authorText.append(author1.getFullName()+" ");
         }
         author.setText(authorText);
-
+        Glide.with(context).load(book.getImageURL()).error(R.drawable.ic_error_outline_black_24dp).into(image);
 
         return view;
     }
+
+
+
 
 }

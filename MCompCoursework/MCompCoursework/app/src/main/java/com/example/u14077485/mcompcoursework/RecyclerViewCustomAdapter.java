@@ -1,5 +1,7 @@
 package com.example.u14077485.mcompcoursework;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +24,14 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     private List<Book> filteredBooks;
     CustomItemClickListener itemClickListener;
     private Boolean searchTitle;
+    private Context context;
 
-    public RecyclerViewCustomAdapter(List<Book> books, CustomItemClickListener listener) {
+    public RecyclerViewCustomAdapter(Context context, List<Book> books, CustomItemClickListener listener) {
         this.books = books;
         this.filteredBooks = new ArrayList<>(books);
         itemClickListener = listener;
         searchTitle = true;
+        this.context = context;
     }
 
     @Override
@@ -61,6 +68,9 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
             text = filteredBooks.get(position).getAuthors().get(0).getFullName();
         }
         holder.txt_Author.setText(text);
+
+        Glide.with(context).load(filteredBooks.get(position).getImageURL()).error(R.drawable.ic_error_outline_black_24dp).into(holder.img_Image);
+
     }
     private void clearData(ViewHolder holder, int position) {
         holder.txt_Title.setText("");
@@ -79,13 +89,14 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
         private TextView txt_Year;
         private TextView txt_Author;
         private TextView txt_Price;
+        private ImageView img_Image;
         ViewHolder(View view) {
             super(view);
-
             txt_Title = view.findViewById(R.id.lbl_Title);
             txt_Year = view.findViewById(R.id.lbl_Year);
             txt_Author = view.findViewById(R.id.lbl_Author);
             txt_Price = view.findViewById(R.id.lbl_Price);
+            img_Image = view.findViewById(R.id.img_Image);
         }
     }
     public void setSearch(Boolean titles) {
