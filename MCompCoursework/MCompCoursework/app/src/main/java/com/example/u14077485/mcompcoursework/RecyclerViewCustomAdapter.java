@@ -29,8 +29,8 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerViewCustomAdapter(Context context, List<Book> books, CustomItemClickListener listener) {
         this.books = books;
         this.filteredBooks = new ArrayList<>(books);
-        itemClickListener = listener;
-        searchTitle = true;
+        itemClickListener = listener; // reeive the listener and apply the on item click event
+        searchTitle = true; // Default to title search
         this.context = context;
     }
 
@@ -38,10 +38,11 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerViewCustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent,false);
         final ViewHolder viewHolder = new ViewHolder(view);
+        // set the on click for the data. Gets the right data and passes it back to the implementation of onItemClick in RecyclerFragment.java
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onItemClick(v,viewHolder.getAdapterPosition(), filteredBooks);
+                itemClickListener.onItemClick(v, viewHolder.getAdapterPosition(), filteredBooks);
             }
         });
         return viewHolder;
@@ -49,27 +50,32 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(RecyclerViewCustomAdapter.ViewHolder holder, int position) {
+        // Wipe data and reset if the get buttons are clicked again
         clearData(holder, position);
         setData(holder,position);
 
     }
     private void setData(ViewHolder holder, int position) {
+        // Set all UI values
         holder.txt_Title.setText(filteredBooks.get(position).getTitle());
         holder.txt_Price.setText("£" + filteredBooks.get(position).getPrice().toString());
         holder.txt_Year.setText(filteredBooks.get(position).getYear());
         String text = "NA";
+        // Et al checks
         if(filteredBooks.get(position).getAuthors().size() > 2) {
             text = filteredBooks.get(position).getAuthors().get(0).getFullName() + ", "+ filteredBooks.get(position).getAuthors().get(1).getFullName()+ " et al.";
         }
         else if (filteredBooks.get(position).getAuthors().size() == 2 ) {
-            text = filteredBooks.get(position).getAuthors().get(0).getFullName()+", " + filteredBooks.get(position).getAuthors().get(1).getFullName();
+            text = filteredBooks.get(position).getAuthors().get(0).getFullName() + ", " + filteredBooks.get(position).getAuthors().get(1).getFullName();
         }
         else if (filteredBooks.get(position).getAuthors().size() > 0){
             text = filteredBooks.get(position).getAuthors().get(0).getFullName();
         }
         holder.txt_Author.setText(text);
-
-        Glide.with(context).load(filteredBooks.get(position).getImageURL()).error(R.drawable.ic_error_outline_black_24dp).into(holder.img_Image);
+        // Glide API image loader
+        Glide.with(context).load(filteredBooks.get(position).getImageURL())
+                .error(R.drawable.ic_error_outline_black_24dp)
+                .into(holder.img_Image);
 
     }
     private void clearData(ViewHolder holder, int position) {
@@ -85,6 +91,7 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        // UI elements setup
         private TextView txt_Title;
         private TextView txt_Year;
         private TextView txt_Author;
@@ -99,8 +106,9 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
             img_Image = view.findViewById(R.id.img_Image);
         }
     }
-    public void setSearch(Boolean titles) {
-        searchTitle = titles;
+    // Setter for search
+    public void setSearch(Boolean titleSearch) {
+        searchTitle = titleSearch;
     }
 
     @Override
@@ -108,27 +116,29 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                String searchTerm = constraint.toString();
+                String searchTerm = constraint.toString(); // get whats in the search bar
                 if(searchTerm.isEmpty()) {
-                    filteredBooks = new ArrayList<>(books);
+                    filteredBooks = new ArrayList<>(books); // All books
                 }
                 else {
                     filteredBooks = new ArrayList<>(books);
                     List<Book> tempList = new ArrayList<>();
                     for (Book book : books) {
+                        // Title search
                         if(searchTitle) {
                             if(book.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
-                                tempList.add(book);
+                                tempList.add(book); // If the any part of the search term is contained in the title
                             }
                         }
                         else if(!searchTitle) {
-                            if (book.getYear().equals(searchTerm)) {
+                            if (book.getYear().equals(searchTerm)) { // Year search
                                 tempList.add(book);
                             }
                         }
                     }
                     filteredBooks = tempList;
                 }
+                // set results up for publishResults function
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = filteredBooks;
                 return filterResults;
@@ -136,7 +146,7 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                notifyDataSetChanged();
+                notifyDataSetChanged(); // Update data in Recycler
             }
         };
     }

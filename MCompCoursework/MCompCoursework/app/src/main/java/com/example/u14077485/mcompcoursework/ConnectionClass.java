@@ -27,7 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
+// Responsible for getting the data and parsing it
 public class ConnectionClass {
     private String TAG = null;
 
@@ -47,7 +47,7 @@ public class ConnectionClass {
                 InputStream in = httpConnection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 StringBuilder sb = new StringBuilder();
-
+                // Create a string with all the data from document
                 String line = null;
                 while((line = reader.readLine()) != null) {
                     line = line.trim();
@@ -72,9 +72,9 @@ public class ConnectionClass {
         try {
             Log.d("Result", result);
             JSONObject jsonObject = new JSONObject(result);
-
+            // Creating jsonObject from the string and then creating json array
             JSONArray jsonArray = jsonObject.getJSONArray("books");
-
+            // book objects are stores in an array called books
             for (int i=0; i < jsonArray.length(); i++) {
                 String title = "NA";
                 String year = "NA";
@@ -84,8 +84,9 @@ public class ConnectionClass {
                 String imageURL = null;
 
                 JSONObject object = jsonArray.getJSONObject(i);
+                // Check the tags first if true then set values
                 if(object.has("title")) {
-                    title = object.getString("title");
+                    title = object.getString("title"); // get values stored with corresponding tag
                 }
                 if(object.has("year")) {
                     year = object.getString("year");
@@ -96,7 +97,7 @@ public class ConnectionClass {
                 if(object.has("price")) {
                     price = object.getDouble("price");
                 }
-                if(object.has("authors")) {
+                if(object.has("authors")) { // Authors is an array. Go inside a new loop
                     JSONArray authorArray = object.getJSONArray("authors");
                     for (int j = 0; j < authorArray.length(); j++) {
                         JSONObject author = authorArray.getJSONObject(j);
@@ -116,29 +117,30 @@ public class ConnectionClass {
                     imageURL = object.getString("image");
                 }
 
-                books.add(new Book(title, year, publisher, price, authors, imageURL));
+                books.add(new Book(title, year, publisher, price, authors, imageURL)); // add to a list of books
             }
 
-        }catch (JSONException e) {
+        }catch (JSONException e) { // Any error in parsing or the JSON file
             Log.e("JSONException","JSON Error", e);
         }
         return books;
     }
 
     private List<Book> parseXML(String result) throws IOException {
-        List<Book> books = new ArrayList<>();
-        String tag = null;
-        String text = null;
-        String title = null;
-        String year = null;
-        String publisher = null;
-        double price = -1.0;
+        List<Book> books    = new ArrayList<>();
+        String tag          = null;
+        String text         = null;
+        String title        = "NA";
+        String year         = "NA";
+        String publisher    = "NA";
+        double price        = -1.0;
         List<Author> authors = new ArrayList<>();
-        String firstName = null;
-        String lastName = null;
-        String imageURL = null;
+        String firstName    = "NA";
+        String lastName     = "NA";
+        String imageURL     = null;
 
         try {
+            // Using an XML parser. Recognises tags correctly
             XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
             xmlPullParserFactory.setNamespaceAware(true);
             XmlPullParser xmlPullParser = xmlPullParserFactory.newPullParser();
@@ -147,25 +149,25 @@ public class ConnectionClass {
             int eventType = xmlPullParser.getEventType();
             while(eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType){
-                    case XmlPullParser.START_TAG:
+                    case XmlPullParser.START_TAG: // Looks at start tags
                         tag = xmlPullParser.getName();
                         break;
-                    case XmlPullParser.TEXT:
+                    case XmlPullParser.TEXT: // text between tags
                         text = xmlPullParser.getText();
                         break;
-                    case XmlPullParser.END_TAG:
+                    case XmlPullParser.END_TAG: // end tags
                         tag = xmlPullParser.getName();
                         switch(tag){
-                            case "book":
+                            case "book": // end of a book then set all data and reset values
                                 books.add(new Book(title, year, publisher, price, authors, imageURL));
                                 // Reset values
                                 authors = new ArrayList<>();
-                                title = null;
-                                year = null;
-                                publisher = null;
+                                title = "NA";
+                                year = "NA";
+                                publisher = "NA";
                                 price = -1.0;
-                                firstName = null;
-                                lastName = null;
+                                firstName = "NA";
+                                lastName = "NA";
                                 imageURL = null;
                                 break;
                             case "title":
@@ -201,6 +203,7 @@ public class ConnectionClass {
         }
         return books;
     }
+    // Depending on what button is pressed determines what parsing is used. Can be extended for new options
     public List<Book> parseText(String result) {
         List<Book> books = new ArrayList<>();
         try {

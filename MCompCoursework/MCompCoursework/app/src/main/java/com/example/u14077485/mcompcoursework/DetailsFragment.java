@@ -24,12 +24,14 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Receive data from the parcel
         book = (Book) getArguments().getParcelable("selectedBook");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Find values
         View view = inflater.inflate(R.layout.details_fragment, container, false);
         TextView title = view.findViewById(R.id.lbl_Title);
         TextView author = view.findViewById(R.id.lbl_Author);
@@ -38,7 +40,7 @@ public class DetailsFragment extends Fragment {
         TextView publisher = view.findViewById(R.id.lbl_Publisher);
         ImageView image = view.findViewById(R.id.image);
         Context context = getContext();
-
+        // Set values
         title.setText(book.getTitle());
         year.setText(book.getYear());
         price.setText("£" + Double.toString(book.getPrice()));

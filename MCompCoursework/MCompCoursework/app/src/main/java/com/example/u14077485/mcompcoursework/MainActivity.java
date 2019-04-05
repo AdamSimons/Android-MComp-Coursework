@@ -14,35 +14,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btnXML = (Button) findViewById(R.id.btnXML);
-        Button btnJSON = (Button) findViewById(R.id.btnJSON);
     }
+
     public void onClickButton(View view) {
 
         Bundle bundle = new Bundle();
-        bundle.putString("Extension",view.getTag().toString());
+        // Get tag that is associated with the buttons: Tags found in strings.xml and activity_main.xml
+        bundle.putString("ExtensionTAG", view.getTag().toString());
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         RecyclerFragment recyclerFragment = new RecyclerFragment();
-
+        // Bundle the tag and send to new fragment and load it
         recyclerFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.recyclerFragment, recyclerFragment,"RECYCLER_FRAGMENT");
         fragmentTransaction.commitNow();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if(id == R.id.action_search) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        return true;
+//    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if(id == R.id.action_search) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }
