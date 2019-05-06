@@ -29,7 +29,7 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerViewCustomAdapter(Context context, List<Book> books, CustomItemClickListener listener) {
         this.books = books;
         this.filteredBooks = new ArrayList<>(books);
-        itemClickListener = listener; // reeive the listener and apply the on item click event
+        itemClickListener = listener; // receive the listener and apply the on item click event
         searchTitle = true; // Default to title search
         this.context = context;
     }

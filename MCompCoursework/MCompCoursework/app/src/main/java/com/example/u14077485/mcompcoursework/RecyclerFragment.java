@@ -66,7 +66,7 @@ public class RecyclerFragment extends Fragment implements SearchView.OnQueryText
                 RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
                 // Find what radio button is checked
                 if(radioButton != null && recyclerViewCustomAdapter != null) {
-                    if(radioButton.getText() == getString(R.string.radioTitle)) {
+                    if(radioButton.getText() == getString(R.string.radio_Title)) {
                         recyclerViewCustomAdapter.setSearch(true); // true for title search
                     }
                     else {
